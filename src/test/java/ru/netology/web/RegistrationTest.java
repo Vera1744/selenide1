@@ -12,6 +12,7 @@ import java.time.format.DateTimeFormatter;
 import static com.codeborne.selenide.Condition.exactText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
+import static org.graalvm.compiler.nodeinfo.InputType.Condition;
 
 public class RegistrationTest {
 
@@ -24,11 +25,11 @@ public class RegistrationTest {
     void shouldRegister() {
         String planningDate = generateDate(3, "dd.MM.yyyy");
         Selenide.open("http://localhost:9999");
+        $("[data-test-id='date'] input").setValue(planningDate);
         $("[data-test-id='city'] input").setValue("Москва");
         $("[data-test-id='name'] input").setValue("Чон Хэин");
         $("[data-test-id='phone'] input").setValue("+79198988878");
         $("[data-test-id='date'] input").press(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.DELETE);
-        $("[data-test-id='date'] input").setValue(planningDate);
         $("[data-test-id='agreement']").click();
         $$(".button").findBy(Condition.text("Забронировать")).click();
         $("[data-test-id='notification']").should(Condition.visible, Duration.ofSeconds(15));
